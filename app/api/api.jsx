@@ -32,3 +32,15 @@ export async function getMovieList(page) {
         console.error('Error getting movie search result: ', error)
     }
   }
+
+  export async function getMovieDetails(movie_id){
+    try{
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?language=en-US`, options);
+      const movieDetails = await response.json();
+       console.log(movieDetails)
+       return movieDetails;
+  
+    }catch(error){
+      console.error('Error fetching Movie Details: ', error)
+    }
+  }
