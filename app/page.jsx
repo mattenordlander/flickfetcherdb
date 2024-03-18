@@ -56,7 +56,7 @@ export default function Home() {
     setSearchMovieValue({ ...searchMovieValue, [name]: value });
   };
 
-  if (loading) {
+  if (loading || !movieList) {
     return <h1>Loading...</h1>;
   }
   return (
@@ -82,7 +82,7 @@ export default function Home() {
           marginLeft: "1rem",
         }}
         onClick={() => {
-          console.log(searchMovieValue.releaseDate)
+          setLoading(true)
           fetchSearchedMovies(
             searchMovieValue.movieTitle,
             searchMovieValue.releaseDate
