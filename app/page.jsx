@@ -73,6 +73,7 @@ export default function Home() {
      handleChange={handleChange}
      value={searchMovieValue.releaseDate}
      yearsArray={yearsArray}
+     disabled={searchMovieValue.movieTitle.length <= 1}
      />
       <button
         style={{
