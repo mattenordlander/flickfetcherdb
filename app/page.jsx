@@ -60,7 +60,7 @@ export default function Home() {
     return <h1>Loading...</h1>;
   }
   return (
-    <main  className="m-auto container px-4">
+    <main  className="m-auto container px-4 mb-10">
         
              <MovieSearchForm
              
