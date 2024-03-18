@@ -1,5 +1,23 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
+html,body{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    color: white;
+}
 
+body{
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.comic-book-title{
+    text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 5px 0 #000, 3px 2px 0 #000;
+    }
+    
+    .comic-book-sub-title{
+        text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000
+    }
