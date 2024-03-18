@@ -97,7 +97,7 @@ export default function Home() {
 
       {movieList.map(({ title, id }) => (
         <div key={id}>
-          <Link href={""}>
+          <Link href={`/${id}`}>
             <p
               style={{
                 color: "red",
