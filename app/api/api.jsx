@@ -44,3 +44,14 @@ export async function getMovieList(page) {
       console.error('Error fetching Movie Details: ', error)
     }
   }
+
+  export async function getCreditsList(movie_id){
+    try{
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/credits?language=en-US`, options)
+      const creditsList = await response.json();
+      return creditsList;
+    } catch(error){
+      console.error('Get credits list error : ',error);
+    }
+  
+  }
