@@ -41,7 +41,7 @@ export default function SelectElement({
       <button
         className="bg-gray-700 hover:bg-gray-500 text-white py-2 px-4 rounded"
         onClick={onClick}
-        disabledBtn={disabledBtn}
+        disabled={disabled}
       >
         Search
       </button>

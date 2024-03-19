@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getMovieList, getSearchedMovie } from "./api/api";
 import Link from "next/link";
-import { useDebounce } from "use-debounce";
 import MovieSearchForm from "./components/MovieSearchForm"
 
 export default function Home() {
@@ -71,7 +70,6 @@ export default function Home() {
              titleValue={searchMovieValue.movieTitle}
              yearsArray={yearsArray}
              disabled={searchMovieValue.movieTitle.length <= 1}
-             disabledBtn={searchMovieValue.movieTitle.length <= 1}
              onClick={() => {
               setLoading(true)
               fetchSearchedMovies(
