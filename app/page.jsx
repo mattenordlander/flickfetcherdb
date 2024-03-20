@@ -3,16 +3,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getMovieList, getSearchedMovie } from "./api/api";
 import Link from "next/link";
-import { useDebounce } from "use-debounce";
-import SelectElement from "./components/SelectElement"
+import MovieSearchForm from "./components/MovieSearchForm"
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [movieList, setMovieList] = useState([]);
+  const [searchedMovies, setSearchedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchMovieValue, setSearchMovieValue] = useState({
     movieTitle: "",
     releaseDate: "",
   });
+const router = useRouter();
+  const searchParams = useSearchParams();
 
   async function fetchMovieList(page) {
     try {
@@ -24,6 +28,14 @@ export default function Home() {
     }
   }
   useEffect(() => {
+
+    // Grab query parameter if user search movie before
+    const movieTitle = searchParams.get('movieTitle');
+const releaseDate = searchParams.get('releaseDate');
+    if(movieTitle){
+      fetchSearchedMovies(movieTitle,releaseDate);
+    }
+      
     fetchMovieList(1);
   }, []);
 
@@ -43,9 +55,17 @@ export default function Home() {
   async function fetchSearchedMovies(title, releaseDate) {
     try {
       const searchedMovie = await getSearchedMovie(title, releaseDate);
-      setMovieList(searchedMovie);
-      console.log(searchedMovie);
-      setLoading(false);
+      setSearchedMovies(searchedMovie);
+      console.log('Search Results: ', searchedMovie);
+
+         // Constructing query parameters
+    const queryParams = new URLSearchParams();
+    if (title) queryParams.append("movieTitle", title);
+    if (releaseDate) queryParams.append("releaseDate", releaseDate);
+
+    // Updating the URL
+    router.push(`?${queryParams.toString()}`);
+    setLoading(false);
     } catch (error) {
       console.error("Error searching movie on page: ", error);
     }
@@ -60,57 +80,60 @@ export default function Home() {
     return <h1>Loading...</h1>;
   }
   return (
-    <main>
-      <label htmlFor="Search">Title...</label>
-      <input
-        type="text"
-        onChange={handleChange}
-        value={searchMovieValue.movieTitle}
-        name={"movieTitle"}
-      />
-     <SelectElement
-     label={"Year"}
-     handleChange={handleChange}
-     value={searchMovieValue.releaseDate}
-     yearsArray={yearsArray}
-     disabled={searchMovieValue.movieTitle.length <= 1}
-     />
-      <button
-        style={{
-          border: "1px solid black",
-          padding: ".1rem .7rem",
-          marginLeft: "1rem",
-        }}
-        onClick={() => {
-          setLoading(true)
-          fetchSearchedMovies(
-            searchMovieValue.movieTitle,
-            searchMovieValue.releaseDate
-          );
-        }}
-        disabled={searchMovieValue.movieTitle.length <= 1}
-      >
-        Search
-      </button>
-      <h1>TRENDNING MOVIES</h1>
-      {movieList.length === 0 && <><h1>Your search - did not match any movies</h1></>}
+    <main  className="m-auto container px-4 mb-10">
+        
+             <MovieSearchForm
+             
+             yearLabel={"Year"}
+             inputLabel={"What are you looking for?"}
+             handleChange={handleChange}
+             value={searchMovieValue.releaseDate}
+             titleValue={searchMovieValue.movieTitle}
+             yearsArray={yearsArray}
+             disabled={searchMovieValue.movieTitle.length <= 1}
+             onClick={() => {
+              setLoading(true)
+              fetchSearchedMovies(
+                searchMovieValue.movieTitle,
+                searchMovieValue.releaseDate
+              );
+            }}
+             />
+<h1 className="top-0 text-5xl my-8 comic-book-title">Search results</h1>
+<section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
 
-      {movieList.map(({ title, id }) => (
-        <div key={id}>
-          <Link href={`/${id}`}>
-            <p
-              style={{
-                color: "red",
-                backgroundColor: "black",
-                padding: ".5rem",
-                margin: ".3rem 0",
-              }}
-            >
-              {title}
-            </p>
-          </Link>
-        </div>
-      ))}
+{searchedMovies && searchedMovies.length === 0 && <><h1>Your search - did not match any movies</h1></>}
+        {searchedMovies.map(({ title, id, poster_path }) => {
+
+           return(
+                <Link key={id} href={`/${id}`} className="flex bg-white border-4 border-black">
+            <div className="max-w-sm overflow-hidden flex flex-col" style={{boxShadow:"8px 7px 0px 3px #1b1d21"}}>
+            <img className="w-full" src={`https://image.tmdb.org/t/p/w500${poster_path}`} alt="Sunset in the mountains"/>
+            <div className="px-3 py-4 flex-grow">
+              <div className="truncate text-lg font-bold text-stone-950">{title}</div>
+            </div>
+                  </div>
+                  </Link>
+          )
+
+})}
+</section>
+
+
+      <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
+<section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+  
+        {movieList.map(({ title, id, poster_path }) => (
+  <Link key={id} href={`/${id}`} className="flex bg-white border-4 border-black">
+            <div className="max-w-sm overflow-hidden flex flex-col" style={{boxShadow:"8px 7px 0px 3px #1b1d21"}}>
+            <img className="w-full" src={`https://image.tmdb.org/t/p/w500${poster_path}`} alt="Sunset in the mountains"/>
+            <div className="px-3 py-4 flex-grow">
+              <div className="truncate text-lg font-bold text-stone-950">{title}</div>
+            </div>
+                  </div>
+                  </Link>
+        ))}
+</section>
     </main>
   );
 }

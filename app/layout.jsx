@@ -1,8 +1,10 @@
-import { Inter } from "next/font/google";
+import { Bangers } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const bangers = Bangers({ subsets: ["latin"],
+weight:"400"
+});
 
 export const metadata = {
   title: "Hand me the popcorn",
@@ -11,17 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <header
-          style={{
-            width: "100%",
-            backgroundColor: "hotpink",
-            padding: "0.2em 1rem",
-            marginBottom: "1rem",
-          }}
-        >
+      <body className={bangers.className} style={{backgroundImage:"linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%)"}}>
+        <header className="bg-slate-800 flex p-3">
           <Link style={{ textDecoration: "none", color: "white" }} href={"/"}>
-            <h1>LOGO</h1>
+            <h1 className="py-2 px-3 text-xl border rounded">flick fetcher db</h1>
           </Link>
         </header>
         {children}
