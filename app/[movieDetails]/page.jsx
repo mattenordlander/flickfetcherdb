@@ -1,5 +1,6 @@
-import { getMovieDetails } from "../api/api";
+import { getMovieDetails, getCreditsList } from "../api/api";
 import { Montserrat } from "next/font/google";
+import TwCard from "../components/TwCard";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["300","500"] });
 
@@ -41,6 +42,9 @@ export default async function movieDetailPage({ params }) {
 
   } = movieDetails;
 
+  const creditsList = await getCreditsList(id);
+  
+
   return (
     <div className="container m-auto">
       <section
@@ -55,7 +59,6 @@ export default async function movieDetailPage({ params }) {
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
             alt={`${title}`}
           />
-          {/* mobile-layout */}
           <div className="">
             <h1 className="comic-book-sub-title text-2xl md:text-4xl">{`${title} (${
               release_date.split("-")[0]
@@ -85,6 +88,19 @@ export default async function movieDetailPage({ params }) {
       </section>
       <section className="p-4"> 
         <h3 className="comic-book-sub-title text-4xl">Top Cast</h3>
+      </section>
+      <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24 px-4">
+        {creditsList.map(({profile_path, name, character}, index)=>{
+          if(index > 5 || !profile_path) return
+          return(
+            <TwCard
+            image={profile_path}
+            title={name}
+            extra={`${character}`}
+            fontForExtra={montserrat.style}
+            />
+          )
+        })}
       </section>
     </div>
   );
