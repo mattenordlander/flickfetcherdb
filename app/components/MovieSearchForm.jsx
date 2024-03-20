@@ -6,8 +6,7 @@ export default function SelectElement({
   yearsArray,
   disabled,
   titleValue,
-  onClick,
-  disabledBtn,
+  onClick
 }) {
   return (
     <form className="flex gap-4 justify-center items-end justify-center p-2">
