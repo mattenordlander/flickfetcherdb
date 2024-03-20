@@ -14,9 +14,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={bangers.className} style={{backgroundImage:"linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%)"}}>
-        <header className="bg-slate-800">
+        <header className="bg-slate-800 flex p-3">
           <Link style={{ textDecoration: "none", color: "white" }} href={"/"}>
-            <h1 className="p-4">LOGO</h1>
+            <h1 className="py-2 px-3 text-xl border rounded">flick fetcher db</h1>
           </Link>
         </header>
         {children}
