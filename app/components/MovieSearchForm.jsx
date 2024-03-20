@@ -39,7 +39,7 @@ export default function SelectElement({
         </select>
       </div>
       <button
-        className="bg-gray-700 hover:bg-gray-500 text-white py-2 px-4 rounded"
+        className="bg-gray-700 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:bg-gray-500"
         onClick={onClick}
         disabled={disabled}
       >
