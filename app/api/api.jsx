@@ -49,7 +49,8 @@ export async function getMovieList(page) {
     try{
       const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/credits?language=en-US`, options)
       const creditsList = await response.json();
-      return creditsList;
+      console.log(creditsList);
+      return creditsList.cast;
     } catch(error){
       console.error('Get credits list error : ',error);
     }
