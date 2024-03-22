@@ -48,7 +48,7 @@ export default async function movieDetailPage({ params }) {
   return (
     <div className="container m-auto">
       <section
-        className="relative before:content-[''] before:bg-slate-800 before:bg-opacity-50 before:absolute before:backdrop-blur-sm before:inset-0 w-100 p-4 bg-no-repeat bg-cover bg-center"
+        className="relative before:content-[''] before:bg-slate-800 before:bg-opacity-50 before:absolute before:backdrop-blur-sm before:inset-0 w-100 p-4 bg-no-repeat bg-cover bg-top"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${backdrop_path})`,
         }}
