@@ -7,10 +7,12 @@ import MovieSearchForm from "./components/MovieSearchForm";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import TwCard from "./components/TwCard";
+import Paigination from "./components/Paigination";
 
 export default function Home() {
   const [movieList, setMovieList] = useState([]);
   const [searchedMovies, setSearchedMovies] = useState([]);
+  const [searchedMoviePage, setSearchedMoviePage] = useState();
   const [loading, setLoading] = useState(true);
   const [searchMovieValue, setSearchMovieValue] = useState({
     movieTitle: "",
@@ -41,6 +43,12 @@ export default function Home() {
     fetchMovieList(1);
   }, []);
 
+  useEffect(() =>{
+
+    if(!movieTitle) return
+    fetchSearchedMovies(movieTitle, releaseDate);
+  },[movieTitle])
+
   const getYearsArray = () => {
     const CurrentYear = new Date().getFullYear();
     const years = [];
@@ -57,8 +65,8 @@ export default function Home() {
   async function fetchSearchedMovies(title, releaseDate) {
     try {
       const searchedMovie = await getSearchedMovie(title, releaseDate);
-      setSearchedMovies(searchedMovie);
-      console.log("Search Results: ", searchedMovie);
+      setSearchedMovies(searchedMovie.results);
+setSearchedMoviePage(searchedMovie.total_pages);
 
       // Constructing query parameters
       const queryParams = new URLSearchParams();
@@ -101,14 +109,14 @@ export default function Home() {
         }}
       />
    {searchedMovies.length > 0 && (
-  <h1 className="top-0 text-5xl my-8 comic-book-title">Search results</h1>
+  <h1 className="text-5xl my-8 comic-book-title">Search results</h1>
 )}
-<section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
-  {movieTitle && searchedMovies.length === 0 && (
+ {movieTitle && searchedMovies.length === 0 && (
     <>
-      <h1>Your search - did not match any movies</h1>
+      <h1 className="text-center mt-10 comic-book-sub-title text-2xl">oops! Your search - {movieTitle} - did not match any movies</h1>
     </>
   )}
+<section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
   {searchedMovies.map(({ title, id, poster_path }) => {
     if (!poster_path) return;
     return (
@@ -117,8 +125,9 @@ export default function Home() {
       </Link>
     );
   })}
+  
 </section>
-
+<Paigination searchedMoviePage={searchedMoviePage}/>
 
       <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
       <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
