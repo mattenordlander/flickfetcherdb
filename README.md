@@ -104,6 +104,21 @@ to check out another movie from the search result.
   }
   ```
 
+  ...this is how useEffect look to see if there is any data stored in the url from prev search:
+
+  ```javascript
+    useEffect(() => {
+    // Grab query parameter if user search movie before
+    const movieTitle = searchParams.get("movieTitle");
+    const releaseDate = searchParams.get("releaseDate");
+    if (movieTitle) {
+      fetchSearchedMovies(movieTitle, releaseDate);
+    }
+
+    fetchMovieList(1);
+  }, []);
+  ```
+
 
 ### `getMovieDetails`
 This function grabs all the juicy details about a specific movie using its ID:
