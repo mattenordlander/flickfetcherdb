@@ -63,19 +63,46 @@ I've crafted this Movie Website using the following technologies:
 
 ## Key Functions
 
-### `fetchSearchedMovies`
+### `getSearchedMovie`
 Fetches movies based on search criteria like title and release date:
 ```javascript
-async function fetchSearchedMovies(title, releaseDate) {
-  try {
-    const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&primary_release_year=${releaseDate}&page=1`, options);
-    const searchData = await response.json();
-    return searchData.results;
-  } catch (error) {
-    console.error('Error fetching search results: ', error);
+ export async function getSearchedMovie(title, releaseYear){
+    try{
+        const respone = await fetch(`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&primary_release_year=${releaseYear}&page=1`, options)
+        const searchData = await respone.json();
+        return searchData.results
+    }catch(error){
+        console.error('Error getting movie search result: ', error)
+    }
   }
-}
 ```
+Then in the page.jsx you have
+## `fetchSearchedMovies`
+
+this function append search data to the URL param.
+This lets you access movie details with dýnamic router but keeps the search result if you go back 
+to check out another movie from the search result.
+
+```javascript
+  async function fetchSearchedMovies(title, releaseDate) {
+    try {
+      const searchedMovie = await getSearchedMovie(title, releaseDate);
+      setSearchedMovies(searchedMovie);
+      console.log("Search Results: ", searchedMovie);
+
+      // Constructing query parameters
+      const queryParams = new URLSearchParams();
+      if (title) queryParams.append("movieTitle", title);
+      if (releaseDate) queryParams.append("releaseDate", releaseDate);
+
+      // Updating the URL
+      router.push(`?${queryParams.toString()}`);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error searching movie on page: ", error);
+    }
+  }
+  ```
 
 
 ### `getMovieDetails`
@@ -93,7 +120,7 @@ async function getMovieDetails(movie_id) {
 }
 ```
 ### `getCreditsList`
-Fetsch info regardning crew members:
+Fetch info regardning crew members:
 ```javascript
 async function getCreditsList(movie_id) {
   try {
