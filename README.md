@@ -34,3 +34,87 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+# Flick Fetcher DB Documentation
+
+## Introduction
+This site is powered by the TMDb API. Discover trending movies and exploring detailed information about your favorite films.
+Responsive design for desktop and mobile users.
+
+## Installation and Setup
+Getting started with our Movie Website:
+1. Clone the repository from our GitHub page.
+2. Install the necessary dependencies by running `npm install`.
+3. Obtain an API key from TMDb and replace the placeholder in `api/api.jsx` with your own key.
+
+
+## Usage
+Here's how you can make the most out of my Movie Website:
+- **Home Page**: Browse trending movies and search for specific titles by using the search form.
+- **Detail Page**: Dive deep into the details of any movie by clicking on its card. You'll find everything from release dates to top cast members!
+
+## Technologies Used
+I've crafted this Movie Website using the following technologies:
+- Next.js
+- Tailwind CSS
+- React
+- TMDb API
+
+## Key Functions
+
+### `fetchSearchedMovies`
+Fetches movies based on search criteria like title and release date:
+```javascript
+async function fetchSearchedMovies(title, releaseDate) {
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&primary_release_year=${releaseDate}&page=1`, options);
+    const searchData = await response.json();
+    return searchData.results;
+  } catch (error) {
+    console.error('Error fetching search results: ', error);
+  }
+}
+```
+
+
+### `getMovieDetails`
+This function grabs all the juicy details about a specific movie using its ID:
+
+```javascript
+async function getMovieDetails(movie_id) {
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?language=en-US`, options);
+    const movieDetails = await response.json();
+    return movieDetails;
+  } catch (error) {
+    console.error('Error fetch movie details: ', error);
+  }
+}
+```
+### `getCreditsList`
+Fetsch info regardning crew members:
+```javascript
+async function getCreditsList(movie_id) {
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/credits?language=en-US`, options);
+    const creditsList = await response.json();
+    return creditsList.cast;
+  } catch (error) {
+    console.error('Oops! Couldn't fetch credits list: ', error);
+  }
+}
+```
+
+## Example Usage
+
+```javascript
+// Fetch movie details by ID
+const movieDetails = await getMovieDetails(movieId);
+console.log(movieDetails);
+
+// Fetch top cast members for a movie
+const creditsList = await getCreditsList(movieId);
+console.log(creditsList);
+```
+
