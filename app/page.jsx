@@ -28,10 +28,12 @@ export default function Home() {
       console.error("error fetching movie List to page: ", error);
     }
   }
+
+      // Grab query parameter if user search movie before
+      const movieTitle = searchParams.get("movieTitle");
+      const releaseDate = searchParams.get("releaseDate");
   useEffect(() => {
-    // Grab query parameter if user search movie before
-    const movieTitle = searchParams.get("movieTitle");
-    const releaseDate = searchParams.get("releaseDate");
+
     if (movieTitle) {
       fetchSearchedMovies(movieTitle, releaseDate);
     }
@@ -83,10 +85,11 @@ export default function Home() {
     <main className="m-auto container px-4 mb-10">
       <MovieSearchForm
         yearLabel={"Year"}
-        inputLabel={"What are you looking for?"}
+        inputLabel={"Title"}
         handleChange={handleChange}
         value={searchMovieValue.releaseDate}
         titleValue={searchMovieValue.movieTitle}
+        titlePlaceholder={movieTitle}
         yearsArray={yearsArray}
         disabled={searchMovieValue.movieTitle.length <= 1}
         onClick={() => {
@@ -97,22 +100,25 @@ export default function Home() {
           );
         }}
       />
-      <h1 className="top-0 text-5xl my-8 comic-book-title">Search results</h1>
-      <section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
-        {searchedMovies && searchedMovies.length === 0 && (
-          <>
-            <h1>Your search - did not match any movies</h1>
-          </>
-        )}
-        {searchedMovies.map(({ title, id, poster_path }) => {
-          if (!poster_path) return;
-          return (
-            <Link key={id} href={`/${id}`} className="flex">
-              <TwCard title={title} image={poster_path} />
-            </Link>
-          );
-        })}
-      </section>
+   {searchedMovies.length > 0 && (
+  <h1 className="top-0 text-5xl my-8 comic-book-title">Search results</h1>
+)}
+<section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
+  {movieTitle && searchedMovies.length === 0 && (
+    <>
+      <h1>Your search - did not match any movies</h1>
+    </>
+  )}
+  {searchedMovies.map(({ title, id, poster_path }) => {
+    if (!poster_path) return;
+    return (
+      <Link key={id} href={`/${id}`} className="flex">
+        <TwCard title={title} image={poster_path} />
+      </Link>
+    );
+  })}
+</section>
+
 
       <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
       <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
