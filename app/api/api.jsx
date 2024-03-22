@@ -25,7 +25,7 @@ export async function getMovieList(page) {
         const respone = await fetch(`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&primary_release_year=${releaseYear}&page=1`, options)
 
         const searchData = await respone.json();
-        return searchData.results
+        return searchData
         
     }catch(error){
         console.error('Error getting movie search result: ', error)
