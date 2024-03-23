@@ -11,8 +11,7 @@ const loopPages = () => {
 }
 const moviePages = loopPages();
 
-
-   
+   if (moviePages.length <= 1) return
     return (        
     <nav className="flex justify-center" aria-label="Page navigation">
       <ul className="inline-flex -space-x-px text-xl">
