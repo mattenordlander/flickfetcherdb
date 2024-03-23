@@ -48,6 +48,22 @@ Getting started with our Movie Website:
 2. Install the necessary dependencies by running `npm install`.
 3. Obtain an API key from TMDb and replace the placeholder in `api/api.jsx` with your own key.
 
+ ## Setting Up Your API Key
+
+To get started with our site, you'll need to set up your API key. Follow these simple steps:
+
+1. **Locate the .env.template File**: In the root directory of the project, you'll find a file named `.env.template`.
+
+2. **Copy and Rename**: Make a copy of `.env.template` and rename it to `.env.local`.
+
+3. **Replace the Placeholder**: Open `.env.local` and replace `YOUR_API_KEY` with your actual API key.
+
+Here's an example of how your `.env.local` file should look:
+
+```plaintext
+NEXT_PUBLIC_API_KEY=YOUR_ACTUAL_API_KEY_HERE
+
+
 
 ## Usage
 Here's how you can make the most out of my Movie Website:
