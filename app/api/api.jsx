@@ -2,7 +2,7 @@ const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOTBiZmE3ZmJiNmZlMWI0MWY4NTkzYzVkMjMzMGI4OSIsInN1YiI6IjY0ODgxMmEzZTM3NWMwMDExYzgxNGVjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7M-hpGKynn0cM5--vOUNKfXp7VrWe7dyLpdzOjbXDy0`
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KE}`
     }
   };
 
