@@ -55,7 +55,7 @@ export default function Home() {
   const getYearsArray = () => {
     const CurrentYear = new Date().getFullYear();
     const years = [];
-
+// loop year from 1930 to current year
     for (let year = 1930; year <= CurrentYear; year++) {
       years.push(year);
     }
