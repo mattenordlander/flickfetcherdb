@@ -34,10 +34,11 @@ export default function Home() {
       // Grab query parameter if user search movie before
       const movieTitle = searchParams.get("movieTitle");
       const releaseDate = searchParams.get("releaseDate");
+      const page = searchParams.get("Page");
   useEffect(() => {
 
     if (movieTitle) {
-      fetchSearchedMovies(movieTitle, releaseDate);
+      fetchSearchedMovies(movieTitle, releaseDate, page);
     }
 
     fetchMovieList(1);
@@ -46,8 +47,8 @@ export default function Home() {
   useEffect(() =>{
 
     if(!movieTitle) return
-    fetchSearchedMovies(movieTitle, releaseDate);
-  },[movieTitle])
+    fetchSearchedMovies(movieTitle, releaseDate, page);
+  },[movieTitle, page])
 
   const getYearsArray = () => {
     const CurrentYear = new Date().getFullYear();
@@ -62,16 +63,19 @@ export default function Home() {
 
   const yearsArray = getYearsArray();
 
-  async function fetchSearchedMovies(title, releaseDate) {
+  async function fetchSearchedMovies(title, releaseDate, page) {
     try {
-      const searchedMovie = await getSearchedMovie(title, releaseDate);
+      const searchedMovie = await getSearchedMovie(title, releaseDate, page);
       setSearchedMovies(searchedMovie.results);
-setSearchedMoviePage(searchedMovie.total_pages);
+
+      // get vale of x amout of pages 
+  setSearchedMoviePage(searchedMovie.total_pages);
 
       // Constructing query parameters
       const queryParams = new URLSearchParams();
       if (title) queryParams.append("movieTitle", title);
       if (releaseDate) queryParams.append("releaseDate", releaseDate);
+      if (page) queryParams.append("Page", page);
 
       // Updating the URL
       router.push(`?${queryParams.toString()}`);
@@ -89,6 +93,10 @@ setSearchedMoviePage(searchedMovie.total_pages);
   if (loading || !movieList) {
     return <h1>Loading...</h1>;
   }
+
+  const getTheNumber = (number) => {
+console.log(number);
+  }
   return (
     <main className="m-auto container px-4 mb-10">
       <MovieSearchForm
@@ -104,7 +112,8 @@ setSearchedMoviePage(searchedMovie.total_pages);
           setLoading(true);
           fetchSearchedMovies(
             searchMovieValue.movieTitle,
-            searchMovieValue.releaseDate
+            searchMovieValue.releaseDate,
+            1
           );
         }}
       />
@@ -127,7 +136,7 @@ setSearchedMoviePage(searchedMovie.total_pages);
   })}
   
 </section>
-<Paigination searchedMoviePage={searchedMoviePage}/>
+<Paigination searchedMoviePage={searchedMoviePage} movieTitle={movieTitle} releaseDate={releaseDate} fetchSearchedMovies={fetchSearchedMovies}/>
 
       <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
       <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
