@@ -92,7 +92,7 @@ export default function Home() {
     setSearchMovieValue({ ...searchMovieValue, [name]: value });
   };
 
-  if (loading || !movieList) {
+  if (loading) {
     return <h1>Loading...</h1>;
   }
   return (
