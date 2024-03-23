@@ -48,7 +48,7 @@ Getting started with our Movie Website:
 2. Install the necessary dependencies by running `npm install`.
 3. Obtain an API key from TMDb and replace the placeholder in `api/api.jsx` with your own key.
 
- ## Setting Up Your API Key
+ ## Setting Up Your TMDB API Key
 
 To get started with our site, you'll need to set up your API key. Follow these simple steps:
 
@@ -64,6 +64,8 @@ Here's an example of how your `.env.local` file should look:
 NEXT_PUBLIC_API_KEY=YOUR_ACTUAL_API_KEY_HERE
 
 ```
+
+If you need more documentation, please visit [TMDB website](https://developer.themoviedb.org/docs/getting-started)
 
 ## Usage
 Here's how you can make the most out of my Movie Website:
