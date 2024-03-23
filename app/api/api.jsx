@@ -20,11 +20,14 @@ export async function getMovieList(page) {
     }
   }
 
-  export async function getSearchedMovie(title, releaseYear){
+  export async function getSearchedMovie(title, releaseYear, page){
     try{
-        const respone = await fetch(`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&primary_release_year=${releaseYear}&page=1`, options)
-
+      if(!releaseYear){
+        releaseYear = "";
+      }
+        const respone = await fetch(`https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&primary_release_year=${releaseYear}&page=${page}`, options)
         const searchData = await respone.json();
+        console.log(searchData)
         return searchData
         
     }catch(error){
