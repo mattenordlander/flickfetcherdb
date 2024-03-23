@@ -63,7 +63,7 @@ Here's an example of how your `.env.local` file should look:
 ```plaintext
 NEXT_PUBLIC_API_KEY=YOUR_ACTUAL_API_KEY_HERE
 
-
+```
 
 ## Usage
 Here's how you can make the most out of my Movie Website:
