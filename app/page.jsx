@@ -24,9 +24,10 @@ export default function Home() {
     try {
       const tmdbMovieList = await getMovieList(page);
       setMovieList(tmdbMovieList);
-      setLoading(false);
     } catch (error) {
       console.error("error fetching movie List to page: ", error);
+    } finally{
+      setLoading(false);
     }
   }
 
@@ -81,9 +82,10 @@ export default function Home() {
 
       // Updating the URL
       router.push(`?${queryParams.toString()}`);
-      setLoading(false);
     } catch (error) {
       console.error("Error searching movie on page: ", error);
+    } finally{
+      setLoading(false);
     }
   }
 
@@ -96,53 +98,52 @@ export default function Home() {
     return <h1>Loading...</h1>;
   }
   return (
-    <main className="m-auto container px-4 mb-10">
-      <MovieSearchForm
-        yearLabel={"Year"}
-        inputLabel={"Title"}
-        handleChange={handleChange}
-        value={searchMovieValue.releaseDate}
-        titleValue={searchMovieValue.movieTitle}
-        yearsArray={yearsArray}
-        disabled={searchMovieValue.movieTitle.length <= 1}
-        onClick={() => {
-          setLoading(true);
-          fetchSearchedMovies(
-            searchMovieValue.movieTitle,
-            searchMovieValue.releaseDate,
-            1
-          );
-        }}
-      />
-   {searchedMovies.length > 0 && (
-  <h1 className="text-5xl my-8 comic-book-title">Search results</h1>
-)}
- {movieTitle && searchedMovies.length === 0 && (
-    <>
-      <h1 className="text-center mt-10 comic-book-sub-title text-2xl">oops! Your search - {movieTitle} - did not match any movies</h1>
-    </>
-  )}
-<section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
-  {searchedMovies.map(({ title, id, poster_path }) => {
-    if (!poster_path) return;
-    return (
-      <Link key={id} href={`/${id}`} className="flex">
-        <TwCard title={title} image={poster_path} />
-      </Link>
-    );
-  })}
-  
-</section>
-<Paigination searchedMoviePage={searchedMoviePage} movieTitle={movieTitle} releaseDate={releaseDate} fetchSearchedMovies={fetchSearchedMovies}/>
-
-      <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
-      <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
-        {movieList.map(({ title, id, poster_path }) => (
-          <Link key={id} href={`/${id}`} className="flex">
-            <TwCard title={title} image={poster_path} />
-          </Link>
-        ))}
+      <main className="m-auto container px-4 mb-10">
+        <MovieSearchForm
+          yearLabel={"Year"}
+          inputLabel={"Title"}
+          handleChange={handleChange}
+          value={searchMovieValue.releaseDate}
+          titleValue={searchMovieValue.movieTitle}
+          yearsArray={yearsArray}
+          disabled={searchMovieValue.movieTitle.length <= 1}
+          onClick={() => {
+            setLoading(true);
+            fetchSearchedMovies(
+              searchMovieValue.movieTitle,
+              searchMovieValue.releaseDate,
+              1
+            );
+          }}
+        />
+         {searchedMovies.length > 0 && (
+        <h1 className="text-5xl my-8 comic-book-title">Search results</h1>
+      )}
+       {movieTitle && searchedMovies.length === 0 && (
+      <>
+        <h1 className="text-center mt-10 comic-book-sub-title text-2xl">oops! Your search - {movieTitle} - did not match any movies</h1>
+      </>
+        )}
+      <section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
+        {searchedMovies.map(({ title, id, poster_path }) => {
+      if (!poster_path) return;
+      return (
+        <Link key={id} href={`/${id}`} className="flex">
+          <TwCard title={title} image={poster_path} />
+        </Link>
+      );
+        })}
+        
       </section>
-    </main>
+      <Paigination searchedMoviePage={searchedMoviePage} movieTitle={movieTitle} releaseDate={releaseDate} fetchSearchedMovies={fetchSearchedMovies}/>
+        <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
+        <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+          {movieList.map(({ title, id, poster_path }) => (
+            <Link key={id} href={`/${id}`} className="flex">
+              <TwCard title={title} image={poster_path} />
+            </Link>
+          ))}
+        </section>
+      </main>
   );
 }
