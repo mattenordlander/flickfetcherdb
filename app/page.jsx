@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getMovieList, getSearchedMovie } from "./api/api";
 import Link from "next/link";
@@ -48,7 +47,10 @@ export default function Home() {
 
     if(!movieTitle) return
     fetchSearchedMovies(movieTitle, releaseDate, page);
-  },[movieTitle, page])
+    setSearchMovieValue({
+      movieTitle:movieTitle ? movieTitle : "",
+      releaseDate:releaseDate ? releaseDate : ""})
+  },[movieTitle, releaseDate ,page])
 
   const getYearsArray = () => {
     const CurrentYear = new Date().getFullYear();
@@ -93,10 +95,6 @@ export default function Home() {
   if (loading || !movieList) {
     return <h1>Loading...</h1>;
   }
-
-  const getTheNumber = (number) => {
-console.log(number);
-  }
   return (
     <main className="m-auto container px-4 mb-10">
       <MovieSearchForm
@@ -105,7 +103,6 @@ console.log(number);
         handleChange={handleChange}
         value={searchMovieValue.releaseDate}
         titleValue={searchMovieValue.movieTitle}
-        titlePlaceholder={movieTitle}
         yearsArray={yearsArray}
         disabled={searchMovieValue.movieTitle.length <= 1}
         onClick={() => {
