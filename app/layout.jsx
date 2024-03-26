@@ -1,6 +1,7 @@
 import { Bangers } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import { Suspense } from "react";
 
 const bangers = Bangers({ subsets: ["latin"],
 weight:"400"
@@ -19,7 +20,9 @@ export default function RootLayout({ children }) {
             <h1 className="py-2 px-3 text-xl border rounded">flick fetcher db</h1>
           </Link>
         </header>
+        <Suspense>
         {children}
+        </Suspense>
       </body>
     </html>
   );
