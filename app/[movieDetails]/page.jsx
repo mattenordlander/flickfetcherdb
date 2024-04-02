@@ -96,7 +96,7 @@ export default async function movieDetailPage({ params }) {
             <TwCard
             image={profile_path}
             title={name}
-            extra={`${character}`}
+            extra={`(${character})`}
             fontForExtra={montserrat.style}
             />
           )
