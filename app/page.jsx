@@ -9,7 +9,7 @@ import TwCard from "./components/TwCard";
 import Paigination from "./components/Paigination";
 
 export default function Home() {
-  const [movieList, setMovieList] = useState([]);
+  const [movieList, setMovieList] = useState(null);
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [searchedMoviePage, setSearchedMoviePage] = useState();
   const [loading, setLoading] = useState(true);
@@ -35,18 +35,14 @@ export default function Home() {
       const movieTitle = searchParams.get("movieTitle");
       const releaseDate = searchParams.get("releaseDate");
       const page = searchParams.get("Page");
-  useEffect(() => {
 
-    if (movieTitle) {
-      fetchSearchedMovies(movieTitle, releaseDate, page);
-    }
-
-    fetchMovieList(1);
-  }, []);
 
   useEffect(() =>{
 
-    if(!movieTitle) return
+    if(!movieList){
+      fetchMovieList(1);
+    }
+
     fetchSearchedMovies(movieTitle, releaseDate, page);
     setSearchMovieValue({
       movieTitle:movieTitle ? movieTitle : "",
@@ -68,6 +64,10 @@ export default function Home() {
 
   async function fetchSearchedMovies(title, releaseDate, page) {
     try {
+     if(!title) {
+      setSearchedMovies([]);
+      return
+     }
       const searchedMovie = await getSearchedMovie(title, releaseDate, page);
       setSearchedMovies(searchedMovie.results);
 
@@ -97,6 +97,10 @@ export default function Home() {
   if (loading) {
     return <h1>Loading...</h1>;
   }
+
+  if(!movieList){
+    return <h1>Movielist is not found</h1>
+  }
   return (
       <main className="m-auto container px-4 mb-10">
         <MovieSearchForm
@@ -116,26 +120,32 @@ export default function Home() {
             );
           }}
         />
+        <button onClick={() => {
+         router.push('/');
+        }}>REMOVE</button>
          {searchedMovies.length > 0 && (
-        <h1 className="text-5xl my-8 comic-book-title">Search results</h1>
+              <section>
+                 <h1 className="text-5xl my-8 comic-book-title">Search results</h1>
+              <div className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
+                {searchedMovies.map(({ title, id, poster_path }) => {
+                      if (!poster_path) return;
+                      return (
+                <Link key={id} href={`/${id}`} className="flex">
+                  <TwCard title={title} image={poster_path} />
+                </Link>
+                      );
+                })}
+              </div>
+            <Paigination searchedMoviePage={searchedMoviePage} movieTitle={movieTitle} releaseDate={releaseDate} fetchSearchedMovies={fetchSearchedMovies}/>  
+            </section>
+
       )}
        {movieTitle && searchedMovies.length === 0 && (
       <>
         <h1 className="text-center mt-10 comic-book-sub-title text-2xl">oops! Your search - {movieTitle} - did not match any movies</h1>
       </>
         )}
-      <section className="relative container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-24">
-        {searchedMovies.map(({ title, id, poster_path }) => {
-      if (!poster_path) return;
-      return (
-        <Link key={id} href={`/${id}`} className="flex">
-          <TwCard title={title} image={poster_path} />
-        </Link>
-      );
-        })}
-        
-      </section>
-      <Paigination searchedMoviePage={searchedMoviePage} movieTitle={movieTitle} releaseDate={releaseDate} fetchSearchedMovies={fetchSearchedMovies}/>
+      
         <h1 className="text-5xl my-8 comic-book-title">TRENDNING MOVIES</h1>
         <section className="container gap-7 grid justify-center max-w grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
           {movieList.map(({ title, id, poster_path }) => (
