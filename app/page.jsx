@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getMovieList, getSearchedMovie } from "./api/api";
+import { getMovieList, getSearchedMovie } from "./api/tmdbAPI";
 import Link from "next/link";
 import MovieSearchForm from "./components/MovieSearchForm";
 import { useSearchParams } from "next/navigation";
@@ -45,7 +45,7 @@ export default function Home() {
 
     fetchSearchedMovies(movieTitle, releaseDate, page);
     setSearchMovieValue({
-      movieTitle:movieTitle ? movieTitle : "",
+      movieTitle:movieTitle ? movieTitle :"",
       releaseDate:releaseDate ? releaseDate : ""})
   },[movieTitle, releaseDate ,page])
 
@@ -66,6 +66,10 @@ export default function Home() {
     try {
      if(!title) {
       setSearchedMovies([]);
+      return
+     }else if (title === "clear"){
+      setSearchedMovies([]);
+      router.push('/')
       return
      }
       const searchedMovie = await getSearchedMovie(title, releaseDate, page);
@@ -111,6 +115,8 @@ export default function Home() {
           titleValue={searchMovieValue.movieTitle}
           yearsArray={yearsArray}
           disabled={searchMovieValue.movieTitle.length <= 1}
+          disabledForClear={searchedMovies.length <= 0}
+          onClickForClear={() =>{fetchSearchedMovies("clear")}}
           onClick={() => {
             setLoading(true);
             fetchSearchedMovies(
@@ -120,9 +126,6 @@ export default function Home() {
             );
           }}
         />
-        <button onClick={() => {
-         router.push('/');
-        }}>REMOVE</button>
          {searchedMovies.length > 0 && (
               <section>
                  <h1 className="text-5xl my-8 comic-book-title">Search results</h1>
