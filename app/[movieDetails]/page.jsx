@@ -1,4 +1,4 @@
-import { getMovieDetails, getCreditsList } from "../api/api";
+import { getMovieDetails, getCreditsList } from "../api/tmdbAPI";
 import { Montserrat } from "next/font/google";
 import TwCard from "../components/TwCard";
 

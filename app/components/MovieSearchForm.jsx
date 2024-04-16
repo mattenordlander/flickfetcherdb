@@ -1,3 +1,6 @@
+'use client'
+
+import { useRouter } from "next/navigation";
 export default function SelectElement({
   yearLabel,
   inputLabel,
@@ -6,11 +9,17 @@ export default function SelectElement({
   yearsArray,
   disabled,
   titleValue,
-  onClick
-}) {
+  onClick,
+  onClickForClear,
+  disabledForClear
+})
+ {
+
+  const router = useRouter();
+
   return (
-    <form className="flex gap-4 justify-center items-end justify-center p-2">
-      <div className="flex flex-col w-3/4 max-w-md">
+    <form className="flex md:flex-row gap-4 justify-center item-start md:items-end justify-center p-2 flex-col">
+      <div className="flex flex-col w-100 md:w-3/4">
         <label className="text-xl" htmlFor="Search">{inputLabel}</label>
         <input
           type="text"
@@ -20,7 +29,7 @@ export default function SelectElement({
           className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      <div className="flex flex-col w-1/4 max-w-md">
+      <div className="flex flex-col w-100 md:w-1/4">
         <label className="text-xl" htmlFor="Search">{yearLabel}</label>
         <select
           name="releaseDate"
@@ -37,13 +46,22 @@ export default function SelectElement({
           ))}
         </select>
       </div>
-      <button
-        className="bg-gray-700 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:bg-gray-500"
-        onClick={onClick}
-        disabled={disabled}
-      >
-        Search
-      </button>
+      <div className="flex gap-4">
+        <button
+          className="bg-gray-700 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:bg-gray-500"
+          onClick={onClick}
+          disabled={disabled}
+        >
+          Search
+        </button>
+        <button
+          className="bg-gray-700 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:bg-gray-500"
+          onClick={onClickForClear}
+          disabled={disabledForClear}
+        >
+          Clear
+        </button>
+      </div>
     </form>
   );
 }
