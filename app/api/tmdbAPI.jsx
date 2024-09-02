@@ -6,7 +6,7 @@ const options = {
     }
   };
 
-export async function getMovieList(page) {
+async function getMovieList(page) {
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`,
@@ -19,7 +19,7 @@ export async function getMovieList(page) {
     }
   }
 
-  export async function getSearchedMovie(title, releaseYear, page){
+  async function getSearchedMovie(title, releaseYear, page){
     try{
       if(!releaseYear){
         releaseYear = "";
@@ -33,7 +33,7 @@ export async function getMovieList(page) {
     }
   }
 
-  export async function getMovieDetails(movie_id){
+  async function getMovieDetails(movie_id){
     try{
       const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?language=en-US`, options);
       const movieDetails = await response.json();
@@ -44,7 +44,7 @@ export async function getMovieList(page) {
     }
   }
 
-  export async function getCreditsList(movie_id){
+  async function getCreditsList(movie_id){
     try{
       const response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/credits?language=en-US`, options)
       const creditsList = await response.json();
@@ -53,4 +53,11 @@ export async function getMovieList(page) {
       console.error('Get credits list error : ',error);
     }
   
+  }
+
+  export const movieAPI = {
+    getMovieList,
+    getSearchedMovie,
+    getMovieDetails,
+    getCreditsList
   }

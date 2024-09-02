@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getMovieList, getSearchedMovie } from "./api/tmdbAPI";
+import { movieAPI } from "./api/tmdbAPI";
 import Link from "next/link";
 import MovieSearchForm from "./components/MovieSearchForm";
 import { useSearchParams } from "next/navigation";
@@ -9,6 +9,8 @@ import TwCard from "./components/TwCard";
 import Paigination from "./components/Paigination";
 
 export default function Home() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [movieList, setMovieList] = useState(null);
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [searchedMoviePage, setSearchedMoviePage] = useState();
@@ -17,12 +19,10 @@ export default function Home() {
     movieTitle: "",
     releaseDate: "",
   });
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   async function fetchMovieList(page) {
     try {
-      const tmdbMovieList = await getMovieList(page);
+      const tmdbMovieList = await movieAPI.getMovieList(page);
       setMovieList(tmdbMovieList);
     } catch (error) {
       console.error("error fetching movie List to page: ", error);
@@ -56,8 +56,8 @@ export default function Home() {
     for (let year = 1930; year <= CurrentYear; year++) {
       years.push(year);
     }
-    const yearsReversed = years.reverse();
-    return yearsReversed;
+    
+    return years.reverse();
   };
 
   const yearsArray = getYearsArray();
@@ -72,7 +72,7 @@ export default function Home() {
       router.push('/')
       return
      }
-      const searchedMovie = await getSearchedMovie(title, releaseDate, page);
+      const searchedMovie = await movieAPI.getSearchedMovie(title, releaseDate, page);
       setSearchedMovies(searchedMovie.results);
 
       // get vale of x amout of pages 
