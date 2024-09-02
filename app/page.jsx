@@ -9,6 +9,8 @@ import TwCard from "./components/TwCard";
 import Paigination from "./components/Paigination";
 
 export default function Home() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [movieList, setMovieList] = useState(null);
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [searchedMoviePage, setSearchedMoviePage] = useState();
@@ -17,8 +19,6 @@ export default function Home() {
     movieTitle: "",
     releaseDate: "",
   });
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   async function fetchMovieList(page) {
     try {
