@@ -1,11 +1,11 @@
-import { getMovieDetails, getCreditsList } from "../api/tmdbAPI";
+import { movieAPI } from "../api/tmdbAPI";
 import { Montserrat } from "next/font/google";
 import TwCard from "../components/TwCard";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["300","500"] });
 
 async function fetchMovieDetails(params) {
-  const movieDetails = await getMovieDetails(params.movieDetails);
+  const movieDetails = await movieAPI.getMovieDetails(params.movieDetails);
 
   if (!movieDetails || movieDetails.error) {
     return { error: "Movie not found" };
@@ -42,7 +42,7 @@ export default async function movieDetailPage({ params }) {
 
   } = movieDetails;
 
-  const creditsList = await getCreditsList(id);
+  const creditsList = await movieAPI.getCreditsList(id);
   
 
   return (
